@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <!--CSS Heading 2-->
+    <style>
+        h2 {
+            margin-top: 10;
+            text-align: center;
+            font-size: 15;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Sebagian Fasilitas Umum Kota Pekalongan</h2>
+    <div id="map" style="height: 600px; margin-top: 20px; margin-bottom: 20px; margin-left: 5px; margin-right: 15px;">
+    </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+        // Mengatur view awal peta
+        var map = L.map("map").setView([-6.89662, 109.67787], 12);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 30,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        //Menambahkan marker
+        var coordinates = [
+            { lat: -6.88160, lon: 109.66754, info: 'RSUD Kraton Pekalongan' },
+            { lat: -6.89154, lon: 109.66191, info: 'RSUD Bendan Pekalongan' },
+            { lat: -6.88037, lon: 109.67114, info: 'RSUD Budi Rahayu' },
+            { lat: -6.86661, lon: 109.67885, info: 'Polsek Pekalongan Utara' },
+            { lat: -6.88569, lon: 109.67558, info: 'Polsek Pekalongan Timur' },
+            { lat: -6.89051, lon: 109.66008, info: 'Polsek Pekalongan Barat' },
+            { lat: -6.92870, lon: 109.67960, info: 'Polsek Pekalongan Selatan' },
+        ];
+        for (var i = 0; i < coordinates.length; i++) {
+            var marker = L.marker([coordinates[i].lat, coordinates[i].lon]).addTo(map);
+            marker.bindPopup(coordinates[i].info);
+        }
+
+        // Menambahkan Lingkaran
+        var circleCoordinates = [
+            [-6.88160, 109.66754],
+            [-6.89154, 109.66191],
+            [-6.88037, 109.67114],
+            [-6.86661, 109.67885],
+            [-6.88569, 109.67558],
+            [-6.89051, 109.66008],
+            [-6.92870, 109.67960]
+        ];
+        var circleRadiuses = [300, 300, 300, 500, 500, 500, 500];
+        var circleColors = ['blue', 'blue', 'blue', 'red', 'red', 'red', 'red'];
+        for (var i = 0; i < circleCoordinates.length; i++) {
+            var circle = L.circle(circleCoordinates[i], {
+                color: circleColors[i],
+                fillColor: circleColors[i],
+                fillOpacity: 0.5,
+                radius: circleRadiuses[i]
+            }).addTo(map);
+        }
+
+        // Menambahkan Polygon
+        var polygons = [
+            {
+                coordinates: [
+                    [-6.89619, 109.66292],
+                    [-6.89633, 109.66415],
+                    [-6.89797, 109.66396],
+                    [-6.89782, 109.66280]
+                ],
+                color: 'green',
+                fillColor: 'green',
+                fillOpacity: 0.5,
+                popupContent: 'Lapangan Mataram Kota Pekalongan'
+            },
+            {
+                coordinates: [
+                    [-6.89019, 109.67576],
+                    [-6.89028, 109.67697],
+                    [-6.89121, 109.67687],
+                    [-6.89102, 109.67566]
+                ],
+                color: 'purple',
+                fillColor: 'purple',
+                fillOpacity: 0.5,
+                popupContent: 'Lapangan Alun-Alun Kota Pekalongan'
+            }
+        ];
+
+        polygons.forEach(function (polygonData) {
+            var polygon = L.polygon(polygonData.coordinates, {
+                color: polygonData.color,
+                fillColor: polygonData.fillColor,
+                fillOpacity: polygonData.fillOpacity
+            }).addTo(map);
+
+            // Menambahkan pop-up informasi
+            polygon.bindPopup(polygonData.popupContent);
+        });
+    </script>
+</body>
+
+</html>
